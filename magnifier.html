@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        .box {
+            margin: 100px;
+            border: 1px solid #fff;
+            position: relative;
+        }
+        
+        .small {
+            position: relative;
+            width: 430px;
+            height: 430px;
+        }
+        
+        .mask {
+            width: 150px;
+            height: 150px;
+            background: rgba(95, 158, 160, 0.4);
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            cursor: move;
+        }
+        
+        .big {
+            width: 280px;
+            height: 280px;
+            border: 1px solid #fff;
+            position: absolute;
+            top: 0;
+            left: 430px;
+            overflow: hidden;
+            display: none;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload = function() {
+            var box = document.getElementsByClassName("box")[0];
+            var small = box.children[0];
+            var big = box.children[1];
+            var bigImg = big.children[0];
+            var mask = small.children[1];
+
+
+            small.onmouseenter = function() {
+                big.style.display = "block";
+                mask.style.display = "block";
+            };
+            small.onmouseleave = function() {
+                big.style.display = "none";
+                mask.style.display = "none";
+            };
+
+            small.onmousemove = function(event) {
+                event = event || window.event;
+                var pagex = event.pageX || scroll().left + event.clientX;
+                var pagey = event.pageY || scroll().top + event.clientY;
+
+                var x = pagex - box.offsetLeft - mask.offsetWidth / 2;
+                var y = pagey - box.offsetTop - mask.offsetHeight / 2;
+
+
+                if (x < 0) {
+                    x = 0;
+                }
+                if (x > small.offsetWidth - mask.offsetWidth) {
+                    x = small.offsetWidth - mask.offsetWidth;
+                }
+                if (y < 0) {
+                    y = 0;
+                }
+                if (y > small.offsetHeight - mask.offsetHeight) {
+                    y = small.offsetHeight - mask.offsetHeight;
+                }
+
+                mask.style.left = x + "px";
+                mask.style.top = y + "px";
+
+
+
+                var scale = bigImg.offsetWidth / small.offsetWidth;
+
+                bigImg.style.marginLeft = -scale * x + "px";
+                bigImg.style.marginTop = -scale * y + "px";
+            }
+        };
+    </script>
+
+</head>
+
+<body>
+    <div class="box">
+        <div class="small">
+            <img src="https://img.alicdn.com/imgextra/i2/4060554880/O1CN01ALiDeP1lv5MZqe4Tp_!!4060554880.jpg_430x430q90.jpg" />
+            <div class="mask"></div>
+        </div>
+        <div class="big">
+            <img src="https://img.alicdn.com/imgextra/i2/4060554880/O1CN01ALiDeP1lv5MZqe4Tp_!!4060554880.jpg" />
+        </div>
+    </div>
+</body>
+
+</html>
